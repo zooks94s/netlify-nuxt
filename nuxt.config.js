@@ -16,7 +16,7 @@ export default {
   },
 
   head: {
-    title: 'netlify-nuxt',
+    title: 'zooks94s',
     htmlAttrs: {
       lang: 'ja',
     },
@@ -43,6 +43,9 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
+
+    '@nuxtjs/style-resources',
+    '@nuxtjs/google-fonts',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -50,4 +53,17 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  styleResources: {
+    scss: ['./assets/css/style.scss'],
+  },
+
+  googleFonts: {
+    display: 'swap',
+    families: {
+      Poppins: {
+        wght: [400, 500],
+      },
+    },
+  },
 }

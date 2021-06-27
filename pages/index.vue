@@ -27,5 +27,6 @@ export default {
 <style lang="scss">
 .main-content {
   width: 100%;
+  height: 100vh;
 }
 </style>
