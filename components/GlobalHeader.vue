@@ -93,12 +93,12 @@ export default {
 
     &-enter {
       opacity: 0;
-      transform: translateY(100%);
+      transform: translateY(-100%);
     }
 
     &-leave-to {
       opacity: 0;
-      transform: translateY(-100%);
+      transform: translateY(100%);
     }
   }
 }

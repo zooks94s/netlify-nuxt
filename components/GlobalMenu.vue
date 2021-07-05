@@ -3,20 +3,23 @@
     transition(
       name="global-menu"
       @enter="onEnter"
+      @after-enter="onAfterEnter"
       @leave="onLeave"
+      @before-leave="onBeforeLeave"
     )
       .global-menu__inner(v-if="isOpen")
         .global-menu__content
-          .global-menu__item
-            nuxt-link.global-menu__link(to="/") HOME
-          .global-menu__item
-            nuxt-link.global-menu__link(to="/about") ABOUT
-          .global-menu__item
-            nuxt-link.global-menu__link(to="/works") WORKS
+          GlobalMenuList(:items="items" :is-show="isShowItems")
 </template>
 
 <script>
+import GlobalMenuList from '@/components/GlobalMenuList'
+
 export default {
+  components: {
+    GlobalMenuList,
+  },
+
   props: {
     isOpen: {
       type: Boolean,
@@ -24,13 +27,41 @@ export default {
     },
   },
 
+  data() {
+    return {
+      items: [
+        {
+          text: 'HOME',
+          link: '/',
+        },
+        {
+          text: 'ABOUT',
+          link: '/about',
+        },
+        {
+          text: 'WORKS',
+          link: '/works',
+        },
+      ],
+      isShowItems: false,
+    }
+  },
+
   methods: {
     onEnter() {
       this.$emit('enter')
     },
 
+    onAfterEnter() {
+      this.isShowItems = true
+    },
+
     onLeave() {
       this.$emit('leave')
+    },
+
+    onBeforeLeave() {
+      this.isShowItems = false
     },
   },
 }
@@ -56,24 +87,7 @@ export default {
     z-index: 1;
     width: 100%;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  &__item {
-    &:not(:first-child) {
-      margin-left: $size-grid * 2;
-    }
-  }
-
-  &__link {
-    color: #ffffff;
-    font-size: 5.8rem;
-    text-decoration: none;
-    font-family: $font-family-poppins;
-    font-weight: 500;
   }
 
   &-enter-active,
