@@ -1,13 +1,18 @@
 <template lang="pug">
-  .global-menu(v-if="isOpen")
-    .global-menu__inner
-      .global-menu__content
-        .global-menu__item
-          nuxt-link.global-menu__link(to="/") HOME
-        .global-menu__item
-          nuxt-link.global-menu__link(to="/about") ABOUT
-        .global-menu__item
-          nuxt-link.global-menu__link(to="/works") WORKS
+  .global-menu
+    transition(
+      name="global-menu"
+      @enter="onEnter"
+      @leave="onLeave"
+    )
+      .global-menu__inner(v-if="isOpen")
+        .global-menu__content
+          .global-menu__item
+            nuxt-link.global-menu__link(to="/") HOME
+          .global-menu__item
+            nuxt-link.global-menu__link(to="/about") ABOUT
+          .global-menu__item
+            nuxt-link.global-menu__link(to="/works") WORKS
 </template>
 
 <script>
@@ -16,6 +21,16 @@ export default {
     isOpen: {
       type: Boolean,
       default: false,
+    },
+  },
+
+  methods: {
+    onEnter() {
+      this.$emit('enter')
+    },
+
+    onLeave() {
+      this.$emit('leave')
     },
   },
 }
@@ -28,15 +43,19 @@ export default {
     top: 0;
     right: 0;
     width: 100%;
-    height: 100vh;
+    height: 0;
+    padding-bottom: 100vh;
     z-index: z-index(globalmenu);
+    overflow: hidden;
   }
 
   &__content {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 1;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,13 +76,14 @@ export default {
     font-weight: 500;
   }
 
-  &__close {
-    position: absolute;
-    top: $size-grid * 2;
-    right: $size-grid * 3;
-    width: 40px;
-    height: 40px;
-    color: #ffffff;
+  &-enter-active,
+  &-leave-active {
+    transition: 0.5s ease;
+  }
+
+  &-enter,
+  &-leave-to {
+    padding-bottom: 0;
   }
 }
 </style>
