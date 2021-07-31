@@ -9,5 +9,11 @@ module.exports = {
     'color-hex-length': 'long',
     'at-rule-no-unknown': null,
     'scss/at-rule-no-unknown': true,
+    'value-keyword-case': [
+      'lower',
+      {
+        ignoreProperties: ['$font-family-base'],
+      },
+    ],
   },
 }

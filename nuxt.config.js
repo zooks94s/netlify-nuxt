@@ -1,4 +1,6 @@
 import { getConfigForKeys } from './lib/config.js'
+import { createClient } from './plugins/contentful.js'
+const client = createClient()
 
 const ctfConfig = getConfigForKeys([
   'CTF_BLOG_POST_TYPE_ID',
@@ -39,11 +41,8 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
-    // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
-
     '@nuxtjs/style-resources',
     '@nuxtjs/google-fonts',
   ],
@@ -54,6 +53,20 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
+  generate: {
+    async routes() {
+      return await client
+        .getEntries({
+          content_type: ctfConfig.CTF_BLOG_POST_TYPE_ID,
+        })
+        .then((entries) => {
+          return entries.items.map((entry) => {
+            return { route: `works/${entry.fields.slug}`, payload: entry }
+          })
+        })
+    },
+  },
+
   styleResources: {
     scss: ['./assets/css/style.scss'],
   },
@@ -63,6 +76,9 @@ export default {
     families: {
       Poppins: {
         wght: [400, 500],
+      },
+      'noto+sans': {
+        wght: [400, 700],
       },
     },
   },
